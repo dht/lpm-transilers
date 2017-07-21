@@ -8,7 +8,7 @@ import * as mock from './mocks/reactNative/state';
 
 describe('playground', function () {
 
-    // it('should parse image from backgroundImage', function () {
+    // it('should parse an empty style to object', function () {
     //
     //     const result  = parse(mock.before6, 1);
     //     expect(result).toEqual(mock.after6)

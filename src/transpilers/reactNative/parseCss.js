@@ -20,7 +20,7 @@ export const parseCss = (style) => {
     return Object.keys(style).reduce((output, key) => {
         
         const value = style[key];
-
+        
         if (value === '') {
             return output;
         }
@@ -32,6 +32,6 @@ export const parseCss = (style) => {
         }
 
         return {...output, ...newRule}
-    }, '');
+    }, {});
 }
 

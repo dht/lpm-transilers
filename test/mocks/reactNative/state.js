@@ -340,3 +340,4 @@ export const after9 = {
     "style": {image: {width: 50,height: 50}},
     "dependencies": ["StyleSheet","Image"]
 };
+
