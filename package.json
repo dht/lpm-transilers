@@ -1,6 +1,6 @@
 {
   "name": "lpm-transpilers",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "description": "Layout Package Manager Project",
   "main": "index.js",
   "module": "./index.js",

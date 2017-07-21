@@ -3,6 +3,8 @@ import css from './css';
 export const parseRule = (key, value) => {
     if (css[key]) {
         value = css[key](value);
+    } else {
+        return null;
     }
 
     if (value === '') {

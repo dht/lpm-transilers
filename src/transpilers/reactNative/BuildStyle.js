@@ -36,8 +36,14 @@ export class BuildStyle {
     }
 
     style() {
+        const css = parseCss(this._style);
+
+        if (Object.keys(css).length === 0) {
+            return null;
+        }
+
         let output = {};
-        output[this.selector] = parseCss(this._style);
+        output[this.selector] = css;
         return output;
     }
 }
@@ -64,7 +70,11 @@ export class BuildStyles {
     }
 
     bakeStyle() {
-        this.rules[this._id]  = this.stylesheet.style();
+        const rules = this.stylesheet.style();
+
+        if (rules) {
+            this.rules[this._id] = rules;
+        }
     }
 
     getValueForKey(key) {
@@ -76,10 +86,10 @@ export class BuildStyles {
     }
 
     style() {
-       return Object
-           .keys(this.rules)
-           .reduce((output, key) =>{
-                return {...output,  ...this.rules[key]};
-           }, {});
+        return Object
+            .keys(this.rules)
+            .reduce((output, key) => {
+                return {...output, ...this.rules[key]};
+            }, {});
     }
 }
