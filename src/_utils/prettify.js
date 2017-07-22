@@ -103,10 +103,14 @@ export const parseLines = (lines, addTabs) => {
     }, '');
 }
 
+export const removeLastBreak = (output) => {
+    return output.replace(/\n$/g, '');
+}
+
 export const prettifyHtml = (html, addTabs = 0) => {
 
     try {
-        return parseLines(linify(html), addTabs);
+        return removeLastBreak(parseLines(linify(html), addTabs));
     } catch (e) {
         return 'problem parsing';
     }
