@@ -31,6 +31,7 @@ export const linify = (html) => {
         mode = 'IDLE',
         inTag = false,
         line = '',
+        cleanTag = '',
         quote = false,
         inline = ['Text', 'Image'],
         isInline;
@@ -52,13 +53,14 @@ export const linify = (html) => {
                 line += ' ';
             } else if (char === '>') {
                 inTag = false;
-                isInline = inline.indexOf(tag) >= 0;
+                cleanTag = tag.replace('/', '');
+                isInline = inline.indexOf(cleanTag) >= 0;
 
                 if (mode === 'TAG' && isInline) {
                     line += '>';
                 } else {
                     line += '>';
-                    output.push({text: line, isInline, tag, closing: mode === 'CLOSING_TAG'});
+                    output.push({text: line, isInline, tag: cleanTag, closing: mode === 'CLOSING_TAG'});
                     line = '';
                 }
                 mode = '';
@@ -70,7 +72,7 @@ export const linify = (html) => {
                     tag += char;
                 }
 
-                if (char === "'" || char === '"') {
+                if ((char === "'" || char === '"') && mode === 'TAG') {
                     quote = !quote;
                 }
             }
@@ -81,25 +83,31 @@ export const linify = (html) => {
 
 export const parseLines = (lines, addTabs) => {
     let tags = [],
-        indent = addTabs || 0;
+        indent = addTabs || 0,
+        lastInline = false;
 
     return lines.reduce((output, line) => {
 
         if (line.isInline) {
-            return output + br(indent) + line.text + enter(output);
+            lastInline = true;
+            return output + br(indent) + line.text + enter();
         }
 
-        if (line.closing && tags[tags.length - 1] === line.tag) {
+        const last_tag = tags[tags.length - 1];
+
+        if (line.closing &&  last_tag.tag === line.tag) {
             tags.pop();
-            indent--;
+            indent = last_tag.indent;
             output += br(indent);
         } else  {
             output += br(indent);
-            tags.push(line.tag);
-            indent++;
+            tags.push({tag: line.tag, indent: indent});
+            indent += lastInline ? 0 : 1;
         }
 
-        return output + line.text + enter(output);
+        lastInline = false;
+
+        return output + line.text + enter();
     }, '');
 }
 

@@ -24,3 +24,12 @@ export const after3 = `<View style={styles.view1}>
     </View>
 </View>`;
 
+export const before4 = `<View style={styles.view1}><Image style={styles.image6} source={{uri: 'http://lorempixel.com/300/300'}}></Image><Text style={styles.text7}>Mike's place</Text><View style={styles.view8}></View><Text style={styles.text11}>position</Text></View>`;
+
+export const after4=`<View style={styles.view1}>
+    <Image style={styles.image6} source={{uri: 'http://lorempixel.com/300/300'}}></Image>
+    <Text style={styles.text7}>Mike's place</Text>
+    <View style={styles.view8}>
+    </View>
+    <Text style={styles.text11}>position</Text>
+</View>`

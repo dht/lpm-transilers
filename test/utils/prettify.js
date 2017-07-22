@@ -10,20 +10,26 @@ describe('prettify', function () {
 
     it('should prettify a simple JSX', function () {
 
-        const result  = prettifyHtml(mock.before1, 0);
+        const result = prettifyHtml(mock.before1, 0);
         expect(result).toEqual(mock.after1)
     });
 
- it('should prettify a complex JSX', function () {
+    it('should prettify a complex JSX', function () {
 
-        const result  = prettifyHtml(mock.before2, 0);
+        const result = prettifyHtml(mock.before2, 0);
         expect(result).toEqual(mock.after2)
     });
 
- it('should prettify a complex JSX #2', function () {
+    it('should prettify a complex JSX #2', function () {
 
-        const result  = prettifyHtml(mock.before3, 0);
+        const result = prettifyHtml(mock.before3, 0);
         expect(result).toEqual(mock.after3)
+    });
+
+    it('should prettify a complex JSX', function () {
+
+        const result = prettifyHtml(mock.before4, 0);
+        expect(result).toEqual(mock.after4)
     });
 
 
