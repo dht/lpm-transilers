@@ -8,23 +8,23 @@ import * as mock from './mocks/utils/mock_jsx';
 
 describe('playground', function () {
 
-    it('should prettify a simple JSX', function () {
-
-        const result  = prettifyHtml(mock.before1, 1);
-        expect(result).toEqual(mock.after1)
-    });
-
- it('should prettify a complex JSX', function () {
-
-        const result  = prettifyHtml(mock.before2, 1);
-        expect(result).toEqual(mock.after2)
-    });
-
- it('should prettify a complex JSX', function () {
-
-        const result  = prettifyHtml(mock.before3, 1);
-        expect(result).toEqual(mock.after3)
-    });
+    // it('should prettify a simple JSX', function () {
+    //
+    //     const result = prettifyHtml(mock.before1, 0);
+    //     expect(result).toEqual(mock.after1)
+    // });
+    //
+    // it('should prettify a complex JSX', function () {
+    //
+    //     const result = prettifyHtml(mock.before2, 0);
+    //     expect(result).toEqual(mock.after2)
+    // });
+    //
+    // it('should prettify a complex JSX', function () {
+    //
+    //     const result = prettifyHtml(mock.before3, 0);
+    //     expect(result).toEqual(mock.after3)
+    // });
 
 
 });

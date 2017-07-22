@@ -79,10 +79,10 @@ export const linify = (html) => {
         }, []);
 }
 
-export const parseLines = (lines) => {
+export const parseLines = (lines, addTabs) => {
     let tags = [],
-        indent = 0;
-    
+        indent = addTabs || 0;
+
     return lines.reduce((output, line) => {
 
         if (line.isInline) {
@@ -103,10 +103,10 @@ export const parseLines = (lines) => {
     }, '');
 }
 
-export const prettifyHtml = (html) => {
+export const prettifyHtml = (html, addTabs = 0) => {
 
     try {
-        return parseLines(linify(html));
+        return parseLines(linify(html), addTabs);
     } catch (e) {
         return 'problem parsing';
     }

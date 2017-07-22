@@ -75,7 +75,7 @@ export const format = (state, element_id, componentName = 'Layout') => {
 
     return formatComponent(componentName,
         output.dependencies,
-        prettifyHtml(output.jsx),
+        prettifyHtml(output.jsx, 3),
         JSON.stringify(output.style, null, 4));
 }
 

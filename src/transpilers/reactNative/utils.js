@@ -52,7 +52,7 @@ import {
 export default class ${componentName} extends Component {
     render() {
         return (
-           ${jsx}
+${jsx}
         );
     }
 }
