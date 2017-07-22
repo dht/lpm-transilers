@@ -1,85 +1,124 @@
+const _space = (number) => {
+    let output = '';
+
+    for (let i = 0; i < number; i++) {
+        output += ' ';
+    }
+
+    return output;
+}
+
 const _tabs = (number) => {
     let output = '';
 
     for (let cnt = 0; cnt < number; cnt++) {
-        output += '\t';
+        output += _space(4);
     }
 
     return output;
 }
 
 const br = (indent) => {
-    return '\n' + _tabs(indent);
+    return _tabs(indent);
 }
 
-export const whichTag = (html, index) => {
-    let inTag = true,
-        tag = '';
-
-    const arr = html.split('');
-
-    for (let i = index + 1; i < index + 10; i++) {
-        const char = arr[i];
-
-        if (char >= 'a' && char <= 'z' && inTag) {
-            tag += char;
-        } else if (char !== '/') {
-            inTag = false;
-        }
-    }
-
-    return tag;
+const enter = () => {
+    return '\n';
 }
 
-export const prettifyHtml = (html) => {
-    let indent = 0,
+export const linify = (html) => {
+    let tag = '',
         mode = 'IDLE',
         inTag = false,
-        tag = '',
-        tagToCome = '',
-        shouldBreakBefore = false,
-        shouldBreakAfter = false,
-        breakBefore = ['p', 'ul', 'li'],
-        breakAfter = ['div', 'h1', 'h2', 'h3', 'h4', 'p', 'ul', 'li', 'View', 'Image', 'Text'];
+        line = '',
+        quote = false,
+        inline = ['Text', 'Image'],
+        isInline;
 
     return html
         .split('')
         .reduce((output, char, index) => {
-
+        
             if (char === '<') {
-                tagToCome = whichTag(html, index);
-                shouldBreakBefore = tagToCome && breakBefore.indexOf(tagToCome) >= 0;
+                tag = '';
                 mode = 'TAG';
+                line += '<';
                 inTag = true;
-                output += (shouldBreakBefore ? br(indent) : '') + '<';
-            } else if (char === '/' && mode === 'TAG') {
+            } else if (!quote && char === '/' && mode === 'TAG') {
                 mode = 'CLOSING_TAG'
-                inTag = true;
-                output += '/';
+                line += '/';
             } else if (char === ' ') {
                 inTag = false;
-                output += ' ';
+                line += ' ';
             } else if (char === '>') {
-                if (mode === 'TAG' || mode === 'CLOSING_TAG') {
-                    indent += mode === 'TAG' ? +1 : -1;
+                inTag = false;
+                isInline = inline.indexOf(tag) >= 0;
 
-                    shouldBreakAfter = breakAfter.indexOf(tag) >= 0;
-                    inTag = false;
-                    tag = '';
+                if (mode === 'TAG' && isInline) {
+                    line += '>';
+                } else {
+                    line += '>';
+                    output.push({text: line, isInline, tag, closing: mode === 'CLOSING_TAG'});
+                    line = '';
                 }
-                output += '>';
-                output += shouldBreakAfter ? br(indent) : '';
+                mode = '';
+
             } else {
-                output += char;
+                line += char;
 
                 if (inTag) {
                     tag += char;
                 }
+
+                if (char === "'" || char === '"') {
+                    quote = !quote;
+                }
             }
 
             return output;
-        }, '');
+        }, []);
 }
+
+export const parseLines = (lines) => {
+    let tags = [],
+        indent = 0;
+    
+    return lines.reduce((output, line) => {
+
+        if (line.isInline) {
+            return output + br(indent) + line.text + enter(output);
+        }
+
+        if (line.closing && tags[tags.length - 1] === line.tag) {
+            tags.pop();
+            indent--;
+            output += br(indent);
+        } else  {
+            output += br(indent);
+            tags.push(line.tag);
+            indent++;
+        }
+
+        return output + line.text + enter(output);
+    }, '');
+}
+
+export const prettifyHtml = (html) => {
+
+    try {
+        return parseLines(linify(html));
+    } catch (e) {
+        return 'problem parsing';
+    }
+
+}
+/*
+ indent += mode === 'TAG' ? +1 : -1;
+
+ shouldBreakAfter = breakAfter.indexOf(tag) >= 0;
+ inTag = false;
+ tag = '';
+ */
 
 export const prettifyScss = (scss) => {
     let indent = 0,

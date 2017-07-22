@@ -1,6 +1,6 @@
 import expect from 'expect'
-import {parse} from '../src/transpilers/reactNative/parse';
-import * as mock from './mocks/reactNative/state';
+import {prettifyHtml} from '../src/_utils/prettify';
+import * as mock from './mocks/utils/mock_jsx';
 
 
 // a place to run tests before adding the to the main suite
@@ -8,11 +8,23 @@ import * as mock from './mocks/reactNative/state';
 
 describe('playground', function () {
 
-    // it('should parse an empty style to object', function () {
-    //
-    //     const result  = parse(mock.before6, 1);
-    //     expect(result).toEqual(mock.after6)
-    // });
+    it('should prettify a simple JSX', function () {
+
+        const result  = prettifyHtml(mock.before1, 1);
+        expect(result).toEqual(mock.after1)
+    });
+
+ it('should prettify a complex JSX', function () {
+
+        const result  = prettifyHtml(mock.before2, 1);
+        expect(result).toEqual(mock.after2)
+    });
+
+ it('should prettify a complex JSX', function () {
+
+        const result  = prettifyHtml(mock.before3, 1);
+        expect(result).toEqual(mock.after3)
+    });
 
 
 });
